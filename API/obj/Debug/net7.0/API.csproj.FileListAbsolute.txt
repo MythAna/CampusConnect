@@ -69,3 +69,6 @@ C:\Users\vikas\DatingApp\API\bin\Debug\net7.0\System.IdentityModel.Tokens.Jwt.dl
 C:\Users\vikas\DatingApp\API\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\vikas\DatingApp\API\bin\Debug\net7.0\Microsoft.IdentityModel.Protocols.dll
 C:\Users\vikas\DatingApp\API\bin\Debug\net7.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\vikas\DatingApp\API\bin\Debug\net7.0\Data\UserSeedData.json
+C:\Users\vikas\DatingApp\API\bin\Debug\net7.0\AutoMapper.dll
+C:\Users\vikas\DatingApp\API\bin\Debug\net7.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
