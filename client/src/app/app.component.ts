@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AccountService } from './_services/account.service';
 import { User } from './_models/user';
+import { NgxSpinnerService } from 'ngx-spinner/public_api';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +11,10 @@ import { User } from './_models/user';
 export class AppComponent implements OnInit {
   title = 'Dating App';
 
-  constructor(private accountService: AccountService) {}
+  constructor(
+    private accountService: AccountService,
+    private spinner: NgxSpinnerService // Combine the constructor parameters
+  ) {}
 
   ngOnInit(): void {
     this.setCurrentUser();
