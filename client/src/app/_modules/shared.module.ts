@@ -7,6 +7,7 @@ import { NgxGalleryModule } from '@kolkov/ngx-gallery';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgxSpinnerService } from 'ngx-spinner/public_api';
 import { FileUploadModule } from 'ng2-file-upload';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 @NgModule({
   declarations: [],
@@ -19,7 +20,8 @@ import { FileUploadModule } from 'ng2-file-upload';
     }),
     NgxGalleryModule,
     NgxSpinnerModule,
-    FileUploadModule
+    FileUploadModule,
+    BsDatepickerModule.forRoot()
   ],
   exports: [
     CommonModule,
@@ -28,7 +30,8 @@ import { FileUploadModule } from 'ng2-file-upload';
     TabsModule,
     NgxGalleryModule,
     NgxSpinnerModule,
-    FileUploadModule
+    FileUploadModule,
+    BsDatepickerModule
   ],
   providers: [ToastrService, NgxSpinnerService]
 })
