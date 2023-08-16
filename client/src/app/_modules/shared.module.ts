@@ -6,6 +6,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { NgxGalleryModule } from '@kolkov/ngx-gallery';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgxSpinnerService } from 'ngx-spinner/public_api';
+import { FileUploadModule } from 'ng2-file-upload';
 
 @NgModule({
   declarations: [],
@@ -17,7 +18,8 @@ import { NgxSpinnerService } from 'ngx-spinner/public_api';
       positionClass: 'toast-bottom-right'
     }),
     NgxGalleryModule,
-    NgxSpinnerModule 
+    NgxSpinnerModule,
+    FileUploadModule
   ],
   exports: [
     CommonModule,
@@ -25,7 +27,8 @@ import { NgxSpinnerService } from 'ngx-spinner/public_api';
     ToastrModule,
     TabsModule,
     NgxGalleryModule,
-    NgxSpinnerModule 
+    NgxSpinnerModule,
+    FileUploadModule
   ],
   providers: [ToastrService, NgxSpinnerService]
 })
