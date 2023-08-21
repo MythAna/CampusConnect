@@ -1,11 +1,15 @@
-import { CanDeactivate } from '@angular/router';
+import { CanDeactivateFn } from '@angular/router';
+import { inject } from '@angular/core';
 import { MemberEditComponent } from '../members/member-edit/member-edit.component';
+import { ConfirmService } from '../_services/confirm.service';
 
-export class PreventUnsavedChangesGuard implements CanDeactivate<MemberEditComponent> {
-  canDeactivate(component: MemberEditComponent): boolean {
-    if (component.editForm?.dirty) {
-      return confirm('Are you sure you want to continue? Any unsaved changes will be lost.');
-    }
-    return true;
+
+export const preventUnsavedChangesCuard: CanDeactivateFn<MemberEditComponent> = (component) => {
+  const confirmService = inject (ConfirmService);
+
+  if (component.editForm?.dirty) { 
+    return confirmService.confirm();
   }
-}
+
+    return true;
+};
