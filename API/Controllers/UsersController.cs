@@ -42,11 +42,10 @@ namespace API.Controllers
 
            var users = await _userRepository.GetMembersAsync(userParams);
 
-            Response.AddPaginationHeader(new PaginationHeader(users.CurrentPages, users.PageSize, users.TotalCount,
-                users.TotalPages));
+            Response.AddPaginationHeader(new PaginationHeader(users.CurrentPage, users.PageSize, 
+                users.TotalCount, users.TotalPages));
 
            return Ok(users);
-
         }
 
         [HttpGet ("{username)")]
