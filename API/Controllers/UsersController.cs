@@ -12,6 +12,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers;
 
+/// <summary>
+/// Handles user profiles, photos, and filtering
+/// </summary>
 [Authorize]
 public class UsersController : BaseApiController
 {
@@ -26,9 +29,13 @@ public class UsersController : BaseApiController
         _mapper = mapper;
     }
 
+    /// <summary>
+    /// Gets paginated list of users with filtering options
+    /// </summary>
     [HttpGet]
     public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery] UserParams userParams)
     {
+        // Set default gender filter to opposite of current user
         var currentUser = await _uow.UserRepository.GetUserByUsernameAsync(User.GetUsername());
         userParams.CurrentUsername = currentUser.UserName;
 
@@ -43,12 +50,18 @@ public class UsersController : BaseApiController
         return Ok(users);
     }
 
+    /// <summary>
+    /// Gets detailed profile for a specific user
+    /// </summary>
     [HttpGet("{username}")]
     public async Task<ActionResult<MemberDto>> GetUser(string username)
     {
         return await _uow.UserRepository.GetMemberAsync(username);
     }
 
+    /// <summary>
+    /// Updates user profile information
+    /// </summary>
     [HttpPut]
     public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto)
     {
@@ -63,6 +76,12 @@ public class UsersController : BaseApiController
         return BadRequest("Failed to update user");
     }
 
+    /// <summary>
+    /// Uploads a new profile photo
+    /// </summary>
+    /// <remarks>
+    /// First uploaded photo automatically becomes main photo
+    /// </remarks>
     [HttpPost("add-photo")]
     public async Task<ActionResult<PhotoDto>> AddPhoto(IFormFile file)
     {
@@ -89,6 +108,9 @@ public class UsersController : BaseApiController
         return BadRequest("Problem adding photo");
     }
 
+    /// <summary>
+    /// Sets a photo as the main profile photo
+    /// </summary>
     [HttpPut("set-main-photo/{photoId}")]
     public async Task<ActionResult> SetMainPhoto(int photoId)
     {
@@ -100,6 +122,7 @@ public class UsersController : BaseApiController
 
         if (photo.IsMain) return BadRequest("This is already your main photo");
 
+        // Swap main photo status
         var currentMain = user.Photos.FirstOrDefault(x => x.IsMain);
         if (currentMain != null) currentMain.IsMain = false;
         photo.IsMain = true;
@@ -109,6 +132,12 @@ public class UsersController : BaseApiController
         return BadRequest("Problem setting main photo");
     }
 
+    /// <summary>
+    /// Deletes a profile photo
+    /// </summary>
+    /// <remarks>
+    /// Cannot delete main photo. Removes from cloud storage if exists.
+    /// </remarks>
     [HttpDelete("delete-photo/{photoId}")]
     public async Task<ActionResult> DeletePhoto(int photoId)
     {
@@ -120,6 +149,7 @@ public class UsersController : BaseApiController
 
         if (photo.IsMain) return BadRequest("You cannot delete your main photo");
 
+        // Remove from cloud storage if applicable
         if (photo.PublicId != null)
         {
             var result = await _photoService.DeletePhotoAsync(photo.PublicId);
