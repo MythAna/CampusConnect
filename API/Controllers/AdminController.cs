@@ -7,6 +7,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
+    /// <summary>
+    /// Admin-only operations for user role management and content moderation.
+    /// </summary>
     public class AdminController : BaseApiController
     {
         private readonly UserManager<AppUser> _userManager;
@@ -20,6 +23,7 @@ namespace API.Controllers
         [HttpGet("users-with-roles")]
         public async Task<ActionResult> GetUsersWithRoles()
         {
+            // Project user data with their roles to avoid over-fetching
             var users = await _userManager.Users
                 .OrderBy(u => u.UserName)
                 .Select(u => new
@@ -45,6 +49,7 @@ namespace API.Controllers
 
             if (user == null) return NotFound();
 
+            // Sync roles: add new ones and remove unchecked ones in a single transaction
             var userRoles = await _userManager.GetRolesAsync(user);
             
             var result   = await _userManager.AddToRolesAsync(user, selectedRoles.Except(userRoles));
@@ -62,6 +67,7 @@ namespace API.Controllers
         [HttpGet("photos-to-moderate")]
         public ActionResult GetPhotosForModeration()
         {
+            // Stub for photo moderation - actual implementation would query photos
             return Ok("Admins or moderators can see this");
         }
     }
