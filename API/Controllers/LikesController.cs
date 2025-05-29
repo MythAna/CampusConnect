@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API;
 
+/// <summary>
+/// Handles user likes functionality (like/unlike and fetching liked users).
+/// </summary>
 [Authorize]
 public class LikesController : BaseApiController
 {
@@ -19,6 +22,10 @@ public class LikesController : BaseApiController
         _uow = uow;
     }
 
+    /// <summary>
+    /// Like another user.
+    /// </summary>
+    /// <param name="username">Target username to like</param>
     [HttpPost("{username}")]
     public async Task<ActionResult> AddLike(string username)
     {
@@ -28,8 +35,10 @@ public class LikesController : BaseApiController
 
         if (likedUser == null) return NotFound();
 
+        // Prevent self-likes
         if (sourceUser.UserName == username) return BadRequest("You cannot like yourself");
 
+        // Check for existing like
         var userLike = await _uow.LikesRepository.GetUserLike(sourceUserId, likedUser.Id);
 
         if (userLike != null) return BadRequest("You already like this user");
@@ -39,7 +48,8 @@ public class LikesController : BaseApiController
             SourceUserId = sourceUserId,
             TargetUserId = likedUser.Id
         };
-
+            
+        // Create and save new like
         sourceUser.LikedUser.Add(userLike);
 
         if (await _uow.Complete()) return Ok();
@@ -47,6 +57,11 @@ public class LikesController : BaseApiController
         return BadRequest("Failed to like user");
     }
 
+    
+    /// <summary>
+    /// Get paginated list of users liked by or liking the current user.
+    /// </summary>
+    /// <param name="likesParams">Pagination and filter parameters</param>
     [HttpGet]
     public async Task<ActionResult<PagedList<LikeDto>>> GetUserLikes([FromQuery]LikesParams likesParams)
     {
