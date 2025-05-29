@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
+/// <summary>
+/// Demo controller for weather forecast data (default .NET template)
+/// </summary>
 public class WeatherForecastController : BaseApiController
 {
     private static readonly string[] Summaries = new[]
@@ -17,6 +20,10 @@ public class WeatherForecastController : BaseApiController
         _logger = logger;
     }
 
+    /// <summary>
+    /// Generates 5-day random weather forecast
+    /// </summary>
+    /// <returns>Array of weather forecast data</returns>
     [HttpGet(Name = "GetWeatherForecast")]
     public IEnumerable<WeatherForecast> Get()
     {
