@@ -2,18 +2,20 @@
     "version": "2.0.0",
     "tasks": [
         {
+            // Builds the .NET project (API.csproj) with full paths and minimal log output
             "label": "build",
             "command": "dotnet",
             "type": "process",
             "args": [
                 "build",
                 "${workspaceFolder}/API/API.csproj",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
+                "/property:GenerateFullPaths=true", // Ensures full file paths in build logs
+                "/consoleloggerparameters:NoSummary" // Suppresses summary logs for cleaner output
             ],
-            "problemMatcher": "$msCompile"
+            "problemMatcher": "$msCompile" // Uses VS Code's built-in .NET problem matcher
         },
         {
+            // Publishes the .NET project (API.csproj) for deployment
             "label": "publish",
             "command": "dotnet",
             "type": "process",
@@ -26,6 +28,7 @@
             "problemMatcher": "$msCompile"
         },
         {
+            // Runs the project in watch mode (auto-restarts on changes)
             "label": "watch",
             "command": "dotnet",
             "type": "process",
