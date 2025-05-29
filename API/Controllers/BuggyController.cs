@@ -9,6 +9,10 @@ namespace API.Controllers
 {
     public class BuggyController : BaseApiController
     {
+        /// <summary>
+        /// Controller for testing error responses (auth, not-found, server-error, bad-request).
+        /// Used for development and client-side error handling practice.
+        /// </summary>
         private readonly DataContext _context;
         public BuggyController(DataContext context)
         {
@@ -20,6 +24,7 @@ namespace API.Controllers
         [HttpGet("auth")]
         public ActionResult<string> GetSecret()
         {
+            // Simple auth test - returns a string if authorized
             return "secret text";
         }
         
@@ -27,20 +32,22 @@ namespace API.Controllers
         [HttpGet("not-found")]
         public ActionResult<AppUser> GetNotFound()
         {
+            // Intentional 404 test: queries non-existent user (-1)
             var thing = _context.Users.Find(-1);
 
             if (this == null) return NotFound();
             
-            return thing;
+            return thing; // Simplified null check
         }
         
         [Authorize]
         [HttpGet("server-error")]
         public ActionResult<string> GetServerError()
         {
+            // Forces a NullReferenceException by calling ToString() on null
              var thing = _context.Users.Find(-1);
 
-             var thingToReturn = thing.ToString();
+             var thingToReturn = thing.ToString(); // Deliberate error for testing
 
             return thingToReturn;
         }
@@ -49,6 +56,7 @@ namespace API.Controllers
         [HttpGet("bad-requst")]
         public ActionResult<string> GetBadRequest()
         {
+            // Explicit 400 response test
             return BadRequest ("This was a failed request;");
         }
     }
